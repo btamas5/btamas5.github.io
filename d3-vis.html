@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3 Bar Chart</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; }
+    h1 { margin-bottom: 1rem; font-family: "Comic Sans MS", cursive, sans-serif; color: #228B22; }
+    .bar { fill: #228B22; }
+    .axis-label { font-size: 12px; fill: #333; }
+  </style>
+</head>
+<body>
+  <h1>D3 Bar Chart</h1>
+  <svg width="700" height="400"></svg>
+  <script>
+    const data = [
+      {category: "A", value: 28},
+      {category: "B", value: 55},
+      {category: "C", value: 43},
+      {category: "D", value: 91},
+      {category: "E", value: 81},
+      {category: "F", value: 53},
+      {category: "G", value: 19},
+      {category: "H", value: 87}
+    ];
+
+    const margin = {top: 40, right: 30, bottom: 70, left: 50};
+    const width = 700 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.category))
+      .range([0, width])
+      .padding(0.2);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.value)]).nice()
+      .range([height, 0]);
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "rotate(45)")
+      .style("text-anchor", "start");
+
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    svg.selectAll(".bar")
+      .data(data)
+      .join("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.category))
+      .attr("y", d => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.value));
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.bottom - 10)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .text("Category");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 15)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .text("Value");
+  </script>
+</body>
+</html>
