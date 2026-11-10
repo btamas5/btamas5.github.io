@@ -1,6 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "A simple bar chart showing sample data.",
+  "description": "Green bar chart with rotated x axis.",
+  "title": {
+    "text": "Sample Bar Chart",
+    "font": "Comic Sans MS",
+    "fontSize": 20,
+    "color": "#228B22"
+  },
   "data": {
     "values": [
       {"category": "A", "value": 28},
@@ -13,9 +19,9 @@
       {"category": "H", "value": 87}
     ]
   },
-  "mark": "bar",
+  "mark": {"type": "bar", "color": "#228B22"},
   "encoding": {
-    "x": {"field": "category", "type": "nominal", "axis": {"labelAngle": 0}},
-    "y": {"field": "value", "type": "quantitative"}
+    "x": {"field": "category", "type": "nominal", "axis": {"labelAngle": 45, "title": "Category"}},
+    "y": {"field": "value", "type": "quantitative", "title": "Value"}
   }
 }
